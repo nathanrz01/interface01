@@ -1,4 +1,4 @@
-Erreur que me renvoie spyder :
+#Erreur que me renvoie spyder :
 
   File "E:\Bureau\sample_codes-master\sample_codes-master\Python\Evo_Thermal_visualization_py3.py", line 341, in <module>
     evo = EvoThermal(sys.argv)
@@ -11,4 +11,6 @@ Erreur que me renvoie spyder :
 
   TypeError: super(type, obj): obj must be an instance or subtype of type
   
+  #Cette erreur est je pense liée au fichier backend ou à la partie du code situé entre la ligne 121 et 149. 
+  #Mais je n'arrive pas à trouver sa cause.
   
