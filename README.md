@@ -9,6 +9,6 @@ Erreur que me renvoie spyder :
   File "C:\Users\Ceris\anaconda3\lib\site-packages\matplotlib\backends\backend_qt5agg.py", line 21, in __init__
     super().__init__(parent=parent)
 
-#TypeError: super(type, obj): obj must be an instance or subtype of type
+  TypeError: super(type, obj): obj must be an instance or subtype of type
   
   
