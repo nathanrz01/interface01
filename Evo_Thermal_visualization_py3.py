@@ -28,8 +28,10 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
 
 
 
-class EvoThermal():
-    def __init__(self,parent):
+class EvoThermal(FigureCanvas):
+
+    def __init__(self):
+        #super(self).__init__()
         ### Search for Evo Thermal port and open it ###
         ports = list(serial.tools.list_ports.comports())
         portname = None
@@ -61,9 +63,9 @@ class EvoThermal():
         self.activate_visualization = True
         self.window = Tk.Tk()
         self.window.wm_geometry("1720x1720")
-        #self.create_text(100,100,"Test")
-        #self.canvas= Canvas(tk,width=100, height = 100, bd=0, highlightthickness=0)
-        #self.canvas.create_text(50,50,text='text')
+        # self.create_text(100,100,"Test")
+        # self.canvas= Canvas(tk,width=100, height = 100, bd=0, highlightthickness=0)
+        
         #canvas.pack()
         #tk.ate()upd
         self.canvas_width = 500
@@ -71,8 +73,9 @@ class EvoThermal():
         self.canvas2 = Tk.Canvas(self.window, width=self.canvas_width, height=self.canvas_height)
         self.canvas2.pack(side=Tk.TOP)
         self.photo = ImageTk.PhotoImage("P")
+        
+        #print(self.photo)
         self.img = self.canvas2.create_image(300,200, image=self.photo)
-        #self.txt = self.canvas2.create_text(100,500,text="test")
         self.text2 = Tk.Label(self.window)
         self.text2.config(height=8, width=20, text='', font=("Helvetica", 22))
         self.text2.pack(side=Tk.BOTTOM)
@@ -96,6 +99,10 @@ class EvoThermal():
         self.canvas4.pack(side=Tk.TOP)
         self.photo = ImageTk.PhotoImage("P")
         self.img = self.canvas4.create_image(100,200, image=self.photo)
+        
+        self.txt = self.canvas5.create_text(300,200, "test")
+        #self.canvas.create_text(50,50,text='text')
+        
         #G=graphe(g,-2,3,6)
         
         #for i in progressbar.progressbar(range(60)):
@@ -118,14 +125,15 @@ class EvoThermal():
         self.colormap[:, 0, 1] = g
         self.colormap[:, 0, 2] = r
         
+    def create_fig(self, parent):
         fig = Figure()
         self.axes = fig.subplots()
         FigureCanvas.__init__(self, fig)
-        self.setParent(parent)
-        self.toolbar = NavigationToolbar(self, self)
-        height = self.toolbar.height() + self.height()
-        fig.set_figheight(height)
-        self.plot()
+        # self.setParent(parent)
+        # self.toolbar = NavigationToolbar(self, self)
+        # height = self.toolbar.height() + self.height()
+        # fig.set_figheight(height)
+        # self.plot()
 
     def plot(self):
         import sqlite3
@@ -304,6 +312,7 @@ class EvoThermal():
     def run(self):
         ### Get frame and print it ###
         frame = self.get_thermals()
+        #print(frame)
         self.rounded_array = np.round(frame, 0)
         self.update_GUI()
 
@@ -312,15 +321,16 @@ class EvoThermal():
         self.send_command(self.deactivate_command)
         self.port.close()
         
-    def graphe():
+    # def graphe():
     
-        moy = (AvgMax + AvgMin)/2
-        moy2 = data/60
-        #X = np.linspace(-np.pi, np.pi, 256,endpoint=True)
-        #C,S = moy/60, data/60
+    #     moy = (AvgMax + AvgMin)/2
+    #     moy2 = dataglob/60
+    #     ecart_type = pstdev([data1, data2, data3, data4, data5, data6])
+    #     X = np.linspace(-np.pi, np.pi, 256,endpoint=True)
+    #     C,S = moy, ecart_type
 
-        plot(X,C)
-        plot(X,S)
+    #     plot(X,C)
+    #     plot(X,S)
 
     def init_plot():
         plt.ion()
@@ -338,9 +348,15 @@ class EvoThermal():
 
 
 if __name__ == "__main__":
-    evo = EvoThermal(sys.argv)
+    evo = EvoThermal()
     try:
+        evo.create_fig(sys.argv)
         while True:
             evo.run()
     except KeyboardInterrupt:
+        evo.stop()
+    finally:
+        
+        print("test")
+        evo.window.destroy()
         evo.stop()
